@@ -1,6 +1,6 @@
 const express=require("express");
 const env=require("dotenv");
-const routes=require("./routes/postRoute")
+const routes=require("./routes/messageRoute")
 const connectWithDb = require("./config/dbConfig");
 const cors = require('cors')
 const fileUpload = require('express-fileupload');

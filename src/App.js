@@ -1,29 +1,27 @@
 
 import { Routes,Route } from 'react-router-dom';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
 
-import { Provider } from 'react-redux';
-import { postStore } from './redux/store';
-import Homapage from './pages/Homapage';
-import PostDetail from './pages/PostDetail';
+
+
+import HomepageTransporter from './pages/HomepageTransporter';
+import HomepageManufacturer from './pages/HomepageManufacturer';
+import Signup from './pages/Signup';
 
 function App() {
 
   return (
     <div  className="">
 
-<Provider store={postStore}>
 <Routes>
-<Route path='/' element={<Homapage/>}></Route>
-<Route path='/login' element={<Login/>} ></Route>
+<Route path='/homeTransporter' element={<HomepageTransporter/>}></Route>
+<Route  path='/' element={<Login/>} ></Route>
+<Route  path='/signup' element={<Signup/>} ></Route>
 
-<Route path='/signup' element={<Signup/>} ></Route>
-<Route path='/postDetail' element={<PostDetail/>} ></Route>
+<Route path='/homemanufacturer' element={<HomepageManufacturer/>} ></Route>
 
 
 </Routes>
-</Provider>
     </div>
   );
 }

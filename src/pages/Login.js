@@ -1,10 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { createNewPassword, loginUser, resetPassword } from '../service/UserService';
-import Navbar from '../components/Navbar';
-import { useDispatch, useSelector } from 'react-redux';
-import { GoogleLogin } from '@react-oauth/google';
-import OTPInput from 'react-otp-input';
+import {  loginUser } from '../service/UserService';
+
 
 
 
@@ -12,8 +9,6 @@ export default function Login() {
 
   const [resetOpt, setResetOpt] = useState(false)
 
-
-  const dispatch = useDispatch();
 
 
   const [loginData, setloginData] = useState({
@@ -42,16 +37,16 @@ export default function Login() {
 
   function handleNewPassword(event) {
     event.preventDefault()
-    createNewPassword(resetData)
-      .then(res => 
-        { console.log(res.data)
-        alert(res.data.message) 
-      setResetOpt(false)
-      })
-      .catch(error => {
-        console.log("request mai error aara hai")
-        console.log(error)
-      })
+    // createNewPassword(resetData)
+    //   .then(res => 
+    //     { console.log(res.data)
+    //     alert(res.data.message) 
+    //   setResetOpt(false)
+    //   })
+    //   .catch(error => {
+    //     console.log("request mai error aara hai")
+    //     console.log(error)
+    //   })
   }
 
 
@@ -61,8 +56,12 @@ export default function Login() {
     loginUser(loginData)
       .then(res => {
         localStorage.setItem('userData', JSON.stringify(res.data))
-        alert("login success")
-        navigate("/")
+        console.log(res.data)
+        if(res.data.success==true)
+        if(res.data.user.role=='transporter')
+          navigate("/homeTransporter")
+          else
+          navigate('/homemanufacturer')
       })
       .catch((error) => {
         console.log("request mai error aara hai")
@@ -73,12 +72,12 @@ export default function Login() {
 
   function handlePass(event) {
     event.preventDefault()
-    resetPassword(loginData)
-      .then(res => {
-        console.log(res.data)
-        setResetOpt(res.data.success)
-      })
-      .catch(error => console.log(error))
+    // resetPassword(loginData)
+    //   .then(res => {
+    //     console.log(res.data)
+    //     setResetOpt(res.data.success)
+    //   })
+    //   .catch(error => console.log(error))
   }
 
 
@@ -92,7 +91,7 @@ export default function Login() {
 
   return (
     <div className='p-5'>
-      <Navbar />
+      {/* <Navbar /> */}
       {!resetOpt && <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
@@ -110,18 +109,18 @@ export default function Login() {
                 Loging As
               </label>
               <div
-                className={`p-1 rounded-md w-fit bg-gray-200 mt-2`}
+                className={`p-1 rounded-md w-fit  bg-gray-200 mt-2 cursor-pointer`}
                 onClick={toggleButton}
               >
                 <div className='flex relative justify-between gap-3 items-center px-2'>
-                  <p className={``}>Transporter</p>
+                  <p className={`mx-1`}>Transporter</p>
 
                   <div
                     className={`w-fit absolute  h-6 rounded-md bg-green-400 text-white px-1 font-serif font-semibold ${isActive ? 'left-0 ' : 'right-0'
                       } shadow-md`}
                   >{`${isActive ? 'Transporter' : 'Manufacturer'}`}</div>
 
-                  <p className={``}>Manufacturer</p>
+                  <p className={`mx-1`}>Manufacturer</p>
                 </div>
               </div>
             </div>

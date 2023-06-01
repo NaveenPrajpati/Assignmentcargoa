@@ -1,26 +1,19 @@
-import React, { createContext, useContext } from 'react'
+import React, {  } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useNavigate, Navigate, Link, NavLink } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 
-import PostForm from '../components/PostForm'
-import { useDispatch, useSelector } from 'react-redux'
-import { FaWindowClose,FaCommentDots } from "react-icons/fa";
-import { getAllComment, postDetailArray, setCommentdeta, setShowDetail } from '../redux/slices/postDetailSlice'
-import Moment from 'react-moment'
-import { createComment, setEnableDetail } from '../redux/slices/postsSlice'
+import { FaWindowClose } from "react-icons/fa";
 import { useRef } from 'react'
-import CommentList from '../components/CommentList'
-import { getTransporter } from '../service/MessageService'
+import { getAllMessages, getTransporter } from '../service/MessageService'
 
-export default function PostDetail({showDetail}) {
+export default function HomepageManufacturer() {
     const [comment, setComment] = useState('')
     const commentRef=useRef();
 const[orderId,setOrderId]=useState('')
 const[user,setUser]=useState('')
 const[transporter,setTransporter]=useState()
 const[sendMessage,setSendMessage]=useState(false)
+const[messages,setMessages]=useState([])
 
     const[manufactuerData,setManufactuerData]=useState[{
         orderId:'',
@@ -37,9 +30,21 @@ const[sendMessage,setSendMessage]=useState(false)
 
     useEffect(async()=>{
        await getTransporter()
-       .then(res=>setTransporter(res.data))
+       .then(res=>{
+        console.log(res.data)
+        setTransporter(res.data)})
+        .catch(error=>console.log(error))
     },[])
+    useEffect(async()=>{
+        // let id= JSON.parse(localStorage.getItem('userData')).user.id
+          await getAllMessages()
+          .then(res=>{
+            //  if(res.data.message.creator==id && res.data.message.price!='')
+             setMessages(res.data.messages)})
+             .catch(error=>console.log(error))
+       },[])
 
+    
 
     function handleChange(event){
 setManufactuerData({...manufactuerData,[event.target.name]:event.target.value})
@@ -55,14 +60,23 @@ setManufactuerData({...manufactuerData,[event.target.name]:event.target.value})
     
             <div className=' bg-slate-200 mx-auto relative p-2 rounded-3xl shadow-2xl shadow-black drop-shadow-2xl font-semibold sm:w-[80%] '>
 
-            <FaWindowClose className='text-red-400 absolute left-5 text-2xl' onClick={handleClose}/>
-            <div className="mt-20 flex flex-col">
-            <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                <div className=" px-6 py-6 rounded shadow-md text-black w-full">
-                    <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-
+            
         
+            <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+               {messages.length==0?<div>
+                <h1>no message from transporter</h1>
+               </div>:  <div>
+{messages?.map((message,index)=>(
+    <div key={index} >
+message
+    </div>
+))}
+                </div>}
+               
 
+                <div className=" px-6 py-6 rounded shadow-md text-black w-full">
+                <FaWindowClose className='text-red-400 absolute left-5 text-2xl' onClick={handleClose}/>
+                    <h1 className="mb-8 text-3xl text-center">Send message to transporter</h1>
                     <input 
                         type="text"
                         className="block border border-grey-light w-full p-2 rounded mb-4"
@@ -103,45 +117,22 @@ setManufactuerData({...manufactuerData,[event.target.name]:event.target.value})
                         onChange={handleChange}
                          />
                         
-                    <ul className=''>
+                    <select className=''>
+                    <option value=''>Transporters</option>
                         {transporter.map((li,index)=>(
-                            <li key={index} onClick={setTransporter}>
-                            {li}
-                            </li>
+                            <option key={index} value={li.id} onClick={setTransporter}>
+                            {li.name}
+                            </option>
                         ))}
-</ul>
-                    <button
-                       onClick={authhandle}
-                        className="w-full text-center py-2 rounded bg-green text-white bg-green-400 focus:outline-none my-1"
-                    >Create Account</button>
-                  {otpbtn &&  <div className='flex items-center justify-between my-4'>
-                     <input 
-                        type="text"
-                        className="border border-grey-light  p-2 rounded "
-                        name="otp"
-                        placeholder="enter OTP" 
-                        onChange={handleChange}
-                        />
-                        <button onClick={savehandle} className='p-2 rounded bg-green text-white bg-blue-400 hover:bg-blue-500'>validate
-                        </button>
-                        </div>}
-                    <button
-                      
-                        className="w-full text-center py-2 rounded bg-green text-white bg-blue-500 focus:outline-none my-1"
-                    >Signup with google</button>
+                </select>
+                   
+              
 
                     
                 </div>
-                
 
-                <div className="text-grey-dark mt-4">
-                    Already have an account? 
-                    <Link className="no-underline border-b border-blue text-blue-600" to={"/login"}>
-                        Log in
-                    </Link>.
-                </div>
             </div>
         </div>
-            </div>
+          
     )
 }

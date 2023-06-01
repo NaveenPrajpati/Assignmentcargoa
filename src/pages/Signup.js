@@ -1,15 +1,10 @@
-import { eventWrapper } from '@testing-library/user-event/dist/utils'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { authUser, registerUser } from '../service/UserService';
-import Navbar from '../components/Navbar';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../redux/slices/homeSlice';
-import { loginstate } from '../redux/slices/navbarSlice';
+
 
 function Signup() {
     const [isActive, setIsActive] = useState(true);
-    const dispatch=useDispatch()
     const navigate=useNavigate()
     const[otpbtn,setOtpbtn]=useState(false)
     const [signupData,setSignupData]=useState({
@@ -35,14 +30,14 @@ function Signup() {
 
     function authhandle(event){
         event.preventDefault();
-    authUser(signupData)
-    .then(res=>{
+    // authUser(signupData)
+    // .then(res=>{
        
-    if(res.status==200)
-      setOtpbtn(true)})
-    .catch(error=>{
-        console.log(error)
-    })
+    // if(res.status==200)
+    //   setOtpbtn(true)})
+    // .catch(error=>{
+    //     console.log(error)
+    // })
     }
     function savehandle(event){
         event.preventDefault();
@@ -68,30 +63,31 @@ function Signup() {
 
   return (
     <div>
-    <Navbar/>
+    {/* <Navbar/> */}
     <div className="mt-20 flex flex-col">
             <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div className=" px-6 py-6 rounded shadow-md text-black w-full">
                     <h1 className="mb-8 text-3xl text-center">Sign up</h1>
 
                     <div>
-          
-          <div
-      className={`p-1 rounded-md w-fit bg-gray-200 my-2 cursor-pointer`}
-      onClick={toggleButton}
-    >
-    <div className='flex relative justify-between gap-3 items-center px-2'>
-      <p className={``}>public</p>
-      
-      <div
-        className={`w-fit absolute  h-6 rounded-md bg-green-400 text-white px-1 font-serif font-semibold ${
-          isActive ? 'left-0 ' : 'right-0'
-        } shadow-md`}
-      >{`${isActive? 'public' : 'admin'}`}</div>
-      
-      <p className={``}>admin</p>
-    </div>
-    </div>    
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                Loging As
+              </label>
+              <div
+                className={`p-1 rounded-md w-fit  bg-gray-200 mt-2 cursor-pointer`}
+                onClick={toggleButton}
+              >
+                <div className='flex relative justify-between gap-3 items-center px-2'>
+                  <p className={`mx-1`}>Transporter</p>
+
+                  <div
+                    className={`w-fit absolute  h-6 rounded-md bg-green-400 text-white px-1 font-serif font-semibold ${isActive ? 'left-0 ' : 'right-0'
+                      } shadow-md`}
+                  >{`${isActive ? 'Transporter' : 'Manufacturer'}`}</div>
+
+                  <p className={`mx-1`}>Manufacturer</p>
+                </div>
+              </div>
             </div>
 
                     <input 
@@ -149,10 +145,7 @@ function Signup() {
                         <button onClick={savehandle} className='p-2 rounded bg-green text-white bg-blue-400 hover:bg-blue-500'>validate
                         </button>
                         </div>}
-                    <button
-                      
-                        className="w-full text-center py-2 rounded bg-green text-white bg-blue-500 focus:outline-none my-1"
-                    >Signup with google</button>
+             
 
                     
                 </div>
@@ -160,7 +153,7 @@ function Signup() {
 
                 <div className="text-grey-dark mt-4">
                     Already have an account? 
-                    <Link className="no-underline border-b border-blue text-blue-600" to={"/login"}>
+                    <Link className="no-underline border-b border-blue text-blue-600" to={"/"}>
                         Log in
                     </Link>.
                 </div>

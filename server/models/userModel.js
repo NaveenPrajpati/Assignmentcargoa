@@ -4,12 +4,11 @@ const mongoose = require("mongoose");
 
 //route handler
 const userSchema = new mongoose.Schema({
-        firstName: {type: String, required: [true, "enter user name"]},
-        lastName: {type: String, required: [true, "enter user name"]},
-        email: {type: String, required: [true, "enter email"], unique: [true, "email taken"]},
-       userType:{type:String,default:'public'},
-        password: {type: String, required: [true, "enter password"],},
-    additionalDetails:{type:mongoose.Schema.Types.ObjectId,ref:'profile'}
+         name: {type: String,required:true},
+        email: {type: String,required:true},
+        role: {type: String,required:true},
+        address: {type: String,required:true},
+        password: {type: String,required:true}
 
     },
     {
