@@ -6,14 +6,14 @@ import Navbar from '../components/Navbar'
 
 
 function HomepageTransporter() {
-  const [comment, setComment] = useState('')
-const[orderId,setOrderId]=useState('')
+
 const[user,setUser]=useState('')
 
 const[sendMessage,setSendMessage]=useState(false)
 const[messages,setMessages]=useState([''])
-const[showMessage,setShowMessage]=useState(false)
-
+const[showMessage,setShowMessage]=useState()
+const[showMessageFrom,setShowMessageFrom]=useState(false)
+const[price,setPrice]=useState('')
 
 
   const[messageData,setMessageData]=useState({
@@ -27,29 +27,42 @@ const[showMessage,setShowMessage]=useState(false)
   })
 
   function handleClose(){
-    setShowMessage(false)
+    setShowMessageFrom(false)
   }
 
-  useEffect(async()=>{
-  //  let user= JSON.parse(localStorage.getItem('userData')).user
-  //  console.log(user)
+  useEffect(()=>{
+   let user= JSON.parse(localStorage.getItem('userData')).user
+   console.log(user)
+   setUser(user)
+  const fetchAllMessages=async()=>{
      await getAllMessages()
      .then(res=>{
         // if(res.data.transporter==user.id)
+      
+        console.log(res.data.messages)
         setMessages(res.data.messages)
       })
         .catch(error=>console.log(error))
   }
+  fetchAllMessages()
+}
   ,[])
 
 
   function handleChange(event){
-setMessageData({...messageData,[event.target.name]:event.target.value})
-     
+// setMessageData({...messageData,[event.target.name]:event.target.value})
+     setPrice(event.target.value)
   }
 
- async function handleReply(id,messageData){
-    await updataMessage(id,messageData)
+ async function handleReply(id){
+  console.log(id)
+    await updataMessage(id,{price:price})
+    .then(res=>{
+      // if(res.data.transporter==user.id)
+    
+      console.log(res.data.message)
+    })
+      .catch(error=>console.log(error))
   }
 
   
@@ -58,27 +71,31 @@ setMessageData({...messageData,[event.target.name]:event.target.value})
   
     
     <div className=' bg-slate-200 h-screen mx-auto  p-2 rounded-3xl shadow-2xl shadow-black drop-shadow-2xl font-semibold '>
-<Navbar user={'user'}/>
+<Navbar user={user}/>
 
 <div className='flex gap-2'>
 <ul className=''>
-                      {messages.length>0 && messages.map((li,index)=>(
-                          <li key={index} onClick={()=>setShowMessage(true)} className='flex'>
-                          {li.orderId}<AiOutlineMessage onClick={()=>setShowMessage(true)} className='text-2xl cursor-pointer'/>
+                      {messages.length>0 && messages.filter(li=>li.transporter===user.id).map((li,index)=>(
+                          <li key={index} onClick={()=>{
+                            setShowMessageFrom(true)
+                            setShowMessage(li)
+                            
+                            }} className='flex'>
+                          {li.orderId}<AiOutlineMessage  className='text-2xl cursor-pointer'/>
                           </li>
                       ))}
 </ul>
 
        
-        {showMessage &&  <div className=" mx-auto flex flex-col items-center justify-center px-2">
+        {showMessageFrom &&  <div className=" mx-auto flex flex-col items-center justify-center px-2">
           <FaWindowClose className='text-red-400  left-5 text-2xl' onClick={handleClose}/>
               <div className=" px-6 py-6 rounded shadow-md text-black w-full">
-                  <h1 className="mb-8 text-3xl text-center">Send to transporter</h1>
+                  <h1 className="mb-8 text-3xl text-center">Send to Manufacturer</h1>
                   <input 
                       type="text"
                       className="block border border-grey-light w-full p-2 rounded mb-4"
                       name="orderId"
-                      value={orderId}
+                      value={showMessage.orderId}
                       placeholder="orderId" 
                       onChange={handleChange}
                       readOnly
@@ -90,6 +107,7 @@ setMessageData({...messageData,[event.target.name]:event.target.value})
                       placeholder="send To" 
                       onChange={handleChange}
                       readOnly
+                      value={showMessage.to}
                       />
 
                   <input 
@@ -98,20 +116,30 @@ setMessageData({...messageData,[event.target.name]:event.target.value})
                       name="from"
                       onChange={handleChange}
                       readOnly
+                      value={showMessage.from}
                       placeholder="Transporter" />
+                  <input 
+                      type="text"
+                      className="block border border-grey-light w-full p-2 rounded mb-4"
+                      name="quantity"
+                      onChange={handleChange}
+                      readOnly
+                      value={showMessage.quantity+" ton"}
+                      placeholder="quantity" />
 
-                      <select onChange={handleChange} readOnly>
+                      {/* <select onChange={handleChange} readOnly>
                           <option value="">Quantity</option>
                           <option value="1">1 ton</option>
                           <option value="2">2 ton</option>
                           <option value="3">3 ton</option>
-                      </select>
+                      </select> */}
 
                   <input 
                       type="text"
                       className="block border border-grey-light w-full p-2 rounded mb-4"
                       name="address"
                       readOnly
+                      value={showMessage.address}
                       placeholder="street,state"
                       onChange={handleChange}
                        />
@@ -126,7 +154,7 @@ setMessageData({...messageData,[event.target.name]:event.target.value})
                       
 
                   <button
-                     onClick={handleReply}
+                     onClick={()=>handleReply(showMessage._id)}
                       className="w-full text-center py-2 rounded bg-green text-white bg-green-400 focus:outline-none my-1"
                   >Reply</button>
                 

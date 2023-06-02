@@ -4,16 +4,16 @@ import { useNavigate } from 'react-router-dom';
 
 const BaseUrl=`http://localhost:4000`;
 //Request interceptors for API calls
-axios.interceptors.request.use(
-  config => {
-    if(localStorage.getItem('userData'))
-    config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`;
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
-);
+// axios.interceptors.request.use(
+//   config => {
+//     if(localStorage.getItem('userData'))
+//     config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`;
+//         return config;
+//     },
+//     error => {
+//         return Promise.reject(error);
+//     }
+// );
 
 const token=()=>{
   
@@ -37,7 +37,10 @@ const token=()=>{
         return axios.get(BaseUrl+`/message`);
     }
   export const updataMessage =(id,message)=>{
-        return axios.put(BaseUrl+`/:${id}`,message);
+        return axios.put(BaseUrl+`/message/${id}`,message);
+    }
+  export const sendMessage =(message)=>{
+        return axios.post(BaseUrl+'/message',message);
     }
 
 

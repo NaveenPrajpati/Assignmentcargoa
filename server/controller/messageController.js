@@ -14,7 +14,10 @@ exports.saveMessage=async(req,res)=>{
     try {
         console.log(req.body)
          const ids=await messageModel.create(req.body)
-         res.status(201).json(ids)
+         res.status(201).json({
+            success:true,
+            message:'message send success',
+            ids})
         
     } catch (error) {
         console.log(error)
@@ -23,9 +26,12 @@ exports.saveMessage=async(req,res)=>{
 }
 exports.addPriceMessage=async(req,res)=>{
     try {
-        const{id,price}=req.body
-        console.log(req.body)
+        console.log(req.params)
+        const id=req.params.id
+        const{price}=req.body
+      
          const ids=await messageModel.findByIdAndUpdate({_id:id},{price:price},{new:true})
+console.log(ids)
          res.status(201).json({
             success:true,
             message:'message sent to manufacturer'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { authUser, registerUser } from '../service/UserService';
+import { registerUser } from '../service/UserService';
 
 
 function Signup() {
@@ -8,43 +8,37 @@ function Signup() {
     const navigate=useNavigate()
     const[otpbtn,setOtpbtn]=useState(false)
     const [signupData,setSignupData]=useState({
-        firstName:"",
-        lastName:"",
+        name:"",
         email:"",
-        password:"",
-        confpass:"",
-        userType:"",
-        otp:""
+        role:"",
+        address:"",
+        password:""
     })
 
     function handleChange(event){
         setSignupData({...signupData,[event.target.name]:event.target.value});
-        
-        if(isActive==false){
-          setSignupData(pre=>{return {...pre,userType:'admin'}});}
+      
+        if(isActive==true){
+          setSignupData(pre=>{return {...pre,role:'transporter'}});}
           else{
-            setSignupData(pre=>{return {...pre,userType:'public'}});}
-
+            setSignupData(pre=>{return {...pre,role:'manufacturer'}});}
     }
 
 
-    function authhandle(event){
-        event.preventDefault();
-    // authUser(signupData)
-    // .then(res=>{
-       
-    // if(res.status==200)
-    //   setOtpbtn(true)})
-    // .catch(error=>{
-    //     console.log(error)
-    // })
-    }
+
+
+
     function savehandle(event){
         event.preventDefault();
+
+    
+
+
     registerUser(signupData)
     .then(res=>{
         if(res.status===201)
-        navigate('/login')
+        console.log(res.data.message)
+        navigate('/')
     })
     .catch(error=>{
         console.log(error)
@@ -71,7 +65,7 @@ function Signup() {
 
                     <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Loging As
+                Register As
               </label>
               <div
                 className={`p-1 rounded-md w-fit  bg-gray-200 mt-2 cursor-pointer`}
@@ -92,18 +86,12 @@ function Signup() {
 
                     <input 
                         type="text"
-                        className="block border border-grey-light w-full p-2 rounded mb-4"
-                        name="firstName"
-                        placeholder="First Name" 
+                        className="block border border-grey-light w-full p-2 rounded my-4 "
+                        name="name"
+                        placeholder="Name" 
                         onChange={handleChange}
                         />
-                    <input 
-                        type="text"
-                        className="block border border-grey-light w-full p-2 rounded mb-4"
-                        name="lastName"
-                        placeholder="Last Name" 
-                        onChange={handleChange}
-                        />
+                    
 
                     <input 
                         type="text"
@@ -112,6 +100,15 @@ function Signup() {
                         onChange={handleChange}
 
                         placeholder="Email" />
+
+
+                    <input 
+                        type="text"
+                        className="block border border-grey-light w-full p-2 rounded mb-4"
+                        name="address"
+                        placeholder="Address" 
+                        onChange={handleChange}
+                        />
 
                     <input 
                         type="password"
@@ -122,29 +119,12 @@ function Signup() {
                          />
                         
                         
-                        <input 
-                        type="password"
-                        className="block border border-grey-light w-full p-2 rounded mb-4"
-                        name="confpass"
-                        placeholder="Confirm Password" 
-                        onChange={handleChange}
-                        />
-
+                     
                     <button
-                       onClick={authhandle}
+                       onClick={savehandle}
                         className="w-full text-center py-2 rounded bg-green text-white bg-green-400 focus:outline-none my-1"
                     >Create Account</button>
-                  {otpbtn &&  <div className='flex items-center justify-between my-4'>
-                     <input 
-                        type="text"
-                        className="border border-grey-light  p-2 rounded "
-                        name="otp"
-                        placeholder="enter OTP" 
-                        onChange={handleChange}
-                        />
-                        <button onClick={savehandle} className='p-2 rounded bg-green text-white bg-blue-400 hover:bg-blue-500'>validate
-                        </button>
-                        </div>}
+              
              
 
                     

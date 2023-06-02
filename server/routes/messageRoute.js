@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/message", saveMessage);
 router.get("/message", allMessage);
-router.put("/message", addPriceMessage);
+router.put("/message/:id", addPriceMessage);
 router.get("/transporter", getAllTransporter);
 
 

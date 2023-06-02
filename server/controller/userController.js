@@ -10,14 +10,14 @@ exports.registerUser=asyncHandler(async(req,res)=>{
     const{name,email,password,role,address}=req.body;
 
     if(!name || !address || !email || !password || !role) {
-        res.status(400).json({
+       return res.status(400).json({
             success:false,
             message:"all field ara necessary"
         })
     }
     const userPresent=await userModel.findOne({email});
     if(userPresent){
-        res.status(400).json({
+       return res.status(400).json({
             success:false,
             message:"user already register go to login"
         })
@@ -26,11 +26,12 @@ exports.registerUser=asyncHandler(async(req,res)=>{
 
     const user=await userModel.create({name,email,address,role,password:hashedPassword});
     if(user){
-        res.status(201).json({
+       return res.status(201).json({
             success:true,
+            message:'user registered',
             user:{ id:user._id,email:user.email,address:user.address,name:user.name,role:user.role}})
     }else{
-        res.status(400).json({
+       return res.status(400).json({
             success:false,
             message:"unable to register user"
         })
@@ -56,7 +57,7 @@ exports.loginUser=asyncHandler(async(req,res)=>{
         res.status(400).json({
             success:false,
             message:"user not register"
-        })
+        })  
     }
     //compare password with hashpassword
     if(await bcrypt.compare(password,findUser.password)){
