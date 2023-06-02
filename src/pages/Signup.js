@@ -46,10 +46,6 @@ function Signup() {
     }
 
 
-   
-
-  
-
     const toggleButton = () => {
       setIsActive(!isActive);
       

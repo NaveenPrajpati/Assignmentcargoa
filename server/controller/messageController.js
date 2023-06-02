@@ -62,6 +62,26 @@ exports.allMessage=async(req,res)=>{
         console.log('error occured in save controller')
     }
 }
+exports.generateOrderId=async(req,res)=>{
+    try {
+        const messages=await messageModel.find()
+        let text =messages.length.toString();
+        text = text.padStart(3,"0");
+          let oid="XB"+text
+            
+         return res.status(200).json({
+                success:true,
+                orderId:oid
+            })
+        
+         
+        
+
+    } catch (error) {
+        console.log(error)
+        console.log('error occured in geting id')
+    }
+}
 
 
 exports.getAllTransporter=async(req,res)=>{

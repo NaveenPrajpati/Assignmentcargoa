@@ -36,6 +36,9 @@ const token=()=>{
   export const getAllMessages =()=>{
         return axios.get(BaseUrl+`/message`);
     }
+  export const getOrderId =()=>{
+        return axios.get(BaseUrl+`/message/id`);
+    }
   export const updataMessage =(id,message)=>{
         return axios.put(BaseUrl+`/message/${id}`,message);
     }

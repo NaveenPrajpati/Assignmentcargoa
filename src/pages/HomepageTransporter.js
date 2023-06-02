@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getAllMessages, updataMessage } from '../service/MessageService'
 import {FaWindowClose} from 'react-icons/fa'
 import {AiOutlineMessage} from 'react-icons/ai'
 import Navbar from '../components/Navbar'
+import { MyContext } from '../App'
 
 
 function HomepageTransporter() {
@@ -15,16 +16,13 @@ const[showMessage,setShowMessage]=useState()
 const[showMessageFrom,setShowMessageFrom]=useState(false)
 const[price,setPrice]=useState('')
 
+const {search,setSearch}=useContext(MyContext)
 
-  const[messageData,setMessageData]=useState({
-      orderId:'',
-      to:'',
-      from:'',
-      quantity:'',
-      address:'',
- 
-      price:''
-  })
+
+if(search){
+ const newMess= messages.filter(it=>(it.orderId===search || it.to===search || it.from===search))
+ setMessages(newMess)
+}
 
   function handleClose(){
     setShowMessageFrom(false)
