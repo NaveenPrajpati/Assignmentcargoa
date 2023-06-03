@@ -108,27 +108,7 @@ export default function Login() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handle}>
 
-            {/* loging switch */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Loging As
-              </label>
-              <div
-                className={`p-1 rounded-md w-fit  bg-gray-200 mt-2 cursor-pointer`}
-                onClick={toggleButton}
-              >
-                <div className='flex relative justify-between gap-3 items-center px-2'>
-                  <p className={`mx-1`}>Transporter</p>
-
-                  <div
-                    className={`w-fit absolute  h-6 rounded-md bg-green-400 text-white px-1 font-serif font-semibold ${isActive ? 'left-0 ' : 'right-0'
-                      } shadow-md`}
-                  >{`${isActive ? 'Transporter' : 'Manufacturer'}`}</div>
-
-                  <p className={`mx-1`}>Manufacturer</p>
-                </div>
-              </div>
-            </div>
+         
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">

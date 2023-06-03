@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import image1 from '../images/create.png'
-import image2 from '../images/instagram-stories.png'
 import { AiOutlineFileSearch } from 'react-icons/ai'
 import { MyContext } from '../App'
 
