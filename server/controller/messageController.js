@@ -2,7 +2,7 @@
 
 
 const messageModel = require("../models/messageModel");
-const transporterModel = require("../models/transporterModel");
+
 const userModel = require("../models/userModel");
 
 

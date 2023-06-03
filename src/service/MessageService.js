@@ -3,25 +3,25 @@ import { useNavigate } from 'react-router-dom';
 
 
 const BaseUrl=`http://localhost:4000`;
-//Request interceptors for API calls
-// axios.interceptors.request.use(
-//   config => {
-//     if(localStorage.getItem('userData'))
-//     config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`;
-//         return config;
-//     },
-//     error => {
-//         return Promise.reject(error);
-//     }
-// );
+// Request interceptors for API calls
+axios.interceptors.request.use(
+  config => {
+    if(localStorage.getItem('userData'))
+    config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userData')).token}`;
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
 
-const token=()=>{
+// const token=()=>{
   
-  if(localStorage.getItem('userData'))
-  return JSON.parse(localStorage.getItem('userData')).token
+//   if(localStorage.getItem('userData'))
+//   return JSON.parse(localStorage.getItem('userData')).token
 
  
-}
+// }
 // const config={
 //   headers:{
 //     Authorization:`${"Bearer "+ token()}`

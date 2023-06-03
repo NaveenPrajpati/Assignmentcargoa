@@ -63,13 +63,12 @@ exports.loginUser=asyncHandler(async(req,res)=>{
     if(await bcrypt.compare(password,findUser.password)){
      const user={
             name:findUser.name,
-                email:findUser.email,
                 role:findUser.role,
                 id:findUser._id
         }
         const accessToken=jwt.sign({
             user,
-        },process.env.ACCESS_TOKEN_SECREC,{expiresIn:"2h"});
+        },process.env.ACCESS_TOKEN_SECREC,{expiresIn:"7d"});
 
         res.status(200).json({
             success:true,
@@ -88,18 +87,18 @@ exports.loginUser=asyncHandler(async(req,res)=>{
 
 //access private
 exports.createPassword=asyncHandler(async (req,res)=>{
-    const {otp,newPassword,confNewPassword}=req.body;
+    const {email,newPassword,confNewPassword}=req.body;
 
-    const check=await otpModel.findOne({otp});
+    const check=await userModel.findOne({email});
 
     if(!check) {
-        res.status(400).json({
-            status: false,
-            message: 'invalid OTP'
+       return res.status(400).json({
+            success: false,
+            message: 'invalid Email address'
         })
     }
         if(newPassword !== confNewPassword){
-            res.status(400).json({
+           return res.status(400).json({
                 status:false,
                 message:'password and confirm password mismatch'
             })

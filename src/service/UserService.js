@@ -8,6 +8,9 @@ const BaseUrl='http://localhost:4000/user';
  export const loginUser=(user)=>{
         return axios.post(BaseUrl+"/login",user);
     }
+ export const createNewPassword=(user)=>{
+        return axios.put(BaseUrl+"/forget",user);
+    }
 
 
 

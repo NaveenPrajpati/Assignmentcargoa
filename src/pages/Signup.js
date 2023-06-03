@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerUser } from '../service/UserService';
+import { toast } from 'react-hot-toast';
 
 
 function Signup() {
@@ -31,13 +32,18 @@ function Signup() {
     function savehandle(event){
         event.preventDefault();
 
-    
-
-
     registerUser(signupData)
     .then(res=>{
         if(res.status===201)
+        toast('user registered successfully')
         console.log(res.data.message)
+        setSignupData({
+          name:"",
+          email:"",
+          role:"",
+          address:"",
+          password:""
+      })
         navigate('/')
     })
     .catch(error=>{
@@ -53,11 +59,15 @@ function Signup() {
 
   return (
     <div>
-    {/* <Navbar/> */}
     <div className="mt-20 flex flex-col">
-            <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                <div className=" px-6 py-6 rounded shadow-md text-black w-full">
-                    <h1 className="mb-8 text-3xl text-center">Sign up</h1>
+            <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
+                <form onSubmit={savehandle} className=" px-6 py-6 rounded shadow-md text-black w-full">
+                <h1 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-green-800">
+            Welcome To Messaging Service
+          </h1>
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            Signup Here
+          </h2>
 
                     <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -85,6 +95,8 @@ function Signup() {
                         className="block border border-grey-light w-full p-2 rounded my-4 "
                         name="name"
                         placeholder="Name" 
+                        required
+                        value={signupData.name}
                         onChange={handleChange}
                         />
                     
@@ -93,8 +105,9 @@ function Signup() {
                         type="text"
                         className="block border border-grey-light w-full p-2 rounded mb-4"
                         name="email"
+                        required
                         onChange={handleChange}
-
+                        value={signupData.email}
                         placeholder="Email" />
 
 
@@ -102,7 +115,9 @@ function Signup() {
                         type="text"
                         className="block border border-grey-light w-full p-2 rounded mb-4"
                         name="address"
-                        placeholder="Address" 
+                        placeholder="Address"
+                        required
+                        value={signupData.address} 
                         onChange={handleChange}
                         />
 
@@ -111,20 +126,22 @@ function Signup() {
                         className="block border border-grey-light w-full p-2 rounded mb-4"
                         name="password"
                         placeholder="Password"
+                        required
+                        value={signupData.password}
                         onChange={handleChange}
                          />
                         
                         
                      
                     <button
-                       onClick={savehandle}
+                       type='submit'
                         className="w-full text-center py-2 rounded bg-green text-white bg-green-400 focus:outline-none my-1"
                     >Create Account</button>
               
              
 
                     
-                </div>
+                </form>
                 
 
                 <div className="text-grey-dark mt-4">

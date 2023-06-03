@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { getAllMessages, updataMessage } from '../service/MessageService'
-import {FaWindowClose} from 'react-icons/fa'
+import {FaSadCry, FaWindowClose} from 'react-icons/fa'
 import {AiOutlineMessage} from 'react-icons/ai'
 import Navbar from '../components/Navbar'
 import { MyContext } from '../App'
+import { toast } from 'react-hot-toast'
 
 
 function HomepageTransporter() {
@@ -30,14 +31,11 @@ if(search){
 
   useEffect(()=>{
    let user= JSON.parse(localStorage.getItem('userData')).user
-   console.log(user)
+
    setUser(user)
   const fetchAllMessages=async()=>{
      await getAllMessages()
      .then(res=>{
-        // if(res.data.transporter==user.id)
-      
-        console.log(res.data.messages)
         setMessages(res.data.messages)
       })
         .catch(error=>console.log(error))
@@ -48,46 +46,45 @@ if(search){
 
 
   function handleChange(event){
-// setMessageData({...messageData,[event.target.name]:event.target.value})
      setPrice(event.target.value)
   }
 
  async function handleReply(id){
-  console.log(id)
     await updataMessage(id,{price:price})
     .then(res=>{
-      // if(res.data.transporter==user.id)
-    
+      toast('replied Successfully')
+      setShowMessageFrom(false)
       console.log(res.data.message)
     })
       .catch(error=>console.log(error))
   }
 
-  
-
   return (
   
     
-    <div className=' bg-slate-200 h-screen mx-auto  p-2 rounded-3xl shadow-2xl shadow-black drop-shadow-2xl font-semibold '>
+    <div className='bg-slate-200 mx-auto relative p-2 h-screen '>
 <Navbar user={user}/>
 
-<div className='flex gap-2'>
-<ul className=''>
+<div className='mx-auto  flex gap-2  justify-between px-2'>
+<div className='sm:w-2/5'>
                       {messages.length>0 && messages.filter(li=>li.transporter===user.id).map((li,index)=>(
-                          <li key={index} onClick={()=>{
+                          <div key={index} onClick={()=>{
                             setShowMessageFrom(true)
                             setShowMessage(li)
                             
-                            }} className='flex'>
-                          {li.orderId}<AiOutlineMessage  className='text-2xl cursor-pointer'/>
-                          </li>
+                            }} className='cursor-pointer bg-gray-200 m-1 shadow-lg p-2 rounded-md flex justify-between items-center font-semibold hover:bg-gray-300'>
+                            <div  className='flex gap-1 items-center'>
+                          <AiOutlineMessage  className=''/>{li.orderId}
+                            </div>
+                            <p>{li.price?'replied':'not answered'}</p>
+                          </div>
                       ))}
-</ul>
+</div>
 
        
         {showMessageFrom &&  <div className=" mx-auto flex flex-col items-center justify-center px-2">
           <FaWindowClose className='text-red-400  left-5 text-2xl' onClick={handleClose}/>
-              <div className=" px-6 py-6 rounded shadow-md text-black w-full">
+              <form onSubmit={()=>handleReply(showMessage._id)} className=" px-6 py-6 rounded shadow-md text-black w-full">
                   <h1 className="mb-8 text-3xl text-center">Send to Manufacturer</h1>
                   <input 
                       type="text"
@@ -147,18 +144,16 @@ if(search){
                       className="block border border-grey-light w-full p-2 rounded mb-4"
                       name="price"
                       placeholder="price"
+                      required
                       onChange={handleChange}
                        />
                       
 
                   <button
-                     onClick={()=>handleReply(showMessage._id)}
+                    type='submit'
                       className="w-full text-center py-2 rounded bg-green text-white bg-green-400 focus:outline-none my-1"
                   >Reply</button>
-                
-
-                  
-              </div>
+              </form>
               
 
             
